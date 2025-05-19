@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataHub-Home</title>
+    <!-- <link rel="stylesheet" href="index.css"> -->
+    <link rel="icon" href="{{ url_for('static', filename='logo2.png') }}">
+    <!-- <script defer src="script.js"></script> -->
+     <style>/* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f8f9fb;
+            color: #222;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+        
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .logo_content{
+            display: flex;
+        }
+        
+        #logo_img1{
+            width: 80px;
+        }
+        
+        .menu-toggle {
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+            display: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            padding: 8px 12px;
+        }
+        
+        .nav-links .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        #b1{border-radius: 30px;
+        height: 80px;
+        width: 250px;
+        font-size: 30px;
+        border: solid  #832525 4px;
+        background-color: #9b3737;
+        box-shadow: #222 0px 12px 10px 1px;
+        color: white;}
+        .btn.primary {
+            color: black;
+        }
+        
+        /* main-body */
+        
+        .main-body{
+            min-width: 800px;
+            background-color: #8EC5FC;
+        background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
+        
+        }
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            /* border: #007BFF solid 10px; */
+        }
+        h6{
+            font-size: 80px;
+            text-align: left;
+            margin-top: 0%;
+            margin-bottom: 80px;
+        }
+        .hero-content {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 95%;
+            
+            /* width: 100%; */
+            margin: 35px;
+            /* border: #f76c9a solid 5px; */
+            background-color: #f6f8f6;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            justify-content: left;
+        }
+        
+        .hero-image {
+            width: 55vw;
+            min-width:440px;
+            max-width: 938px;
+            height: auto;
+            max-height: 550px;
+            border-radius: 10px;
+            /* border: #585355 solid 5px; */
+        
+            /* box-shadow: #222 4px 0px  20px 1px; */
+        }
+        
+        .hero_text_animation{
+            width: 97.5%;
+           
+        }
+        
+        .hero-text h1 {
+            font-size: 3.3vw;
+            /* border: #222 solid 1px; */
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            /* box-shadow: #222 4px 0px  20px 1px; */
+        
+                width:35ch;
+                width: 100%;
+                /* font-family: monospace; */
+                text-wrap: wrap;
+                overflow: hidden;
+                animation: typing 2s steps(25) infinite;
+                animation-direction:alternate;}
+            
+            
+            @keyframes typing{
+                from{
+                    width: 0ch;
+                }
+            }
+        
+        @media (max-width:800px)
+        {.hero-text h1 { font-size: 26.3px;}
+        }
+        
+        .hero-text p {
+            color: #555;
+            font-size: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .hero-buttons {
+            margin-top: 20px;
+            margin-right: 100%;
+        }
+        
+        .hero-buttons .btn {
+            margin: 5px;
+        }
+        
+        /* Features Section */
+        .features {
+            /* border:  pink solid 1px; */
+        height: auto;
+            text-align: center;
+            padding: 40px 0;
+        }
+        .container1{
+        /* border: red solid 1px; */
+        font-size:large;
+        }
+        .container1 h2{
+            font-size: 50px;
+        }
+        
+        .feature1{
+            /* border: yellow solid 1px; */
+        display: flex;
+        justify-content: center;
+        gap: 100px;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        padding-left:50px ;
+        padding-right: 50px;
+        }
+        
+        .feature-img{
+            /* border: blue solid 1px; */
+        width: 800px;
+        /* border-radius: 100px; */
+        
+        height: 500px;
+        
+        }
+        #fi1{
+        width: 100%;
+        
+        height: 100%;
+        /* border: blue solid 1px; */
+        box-shadow: #222 4px 0px  20px 4px;
+        /* box-shadow: 5px 5px 40px 20px rgba(0, 0, 0, 0.2); */
+        border-radius: 150px;
+        }
+        
+        #fi1:hover{
+            transform: scale(1.1);
+            box-shadow: #222 0px 50px  60px 1px ;
+        }
+        
+        footer {
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        .feature-desc{
+            /* border: black solid 1px; */
+        width:700px;
+        display: flex;
+        padding: 10px 10px;
+        justify-content: center;
+        
+        align-items: center;
+        
+        }
+        
+        .feature-desc p{
+            background-color: #dad9e5;
+         padding: 20px;
+            font-size: 25px;
+            /* border: orange solid 1px; */
+            border-radius: 50px;
+            box-shadow: #222 10px 0px  20px 7px;
+        }
+        
+        p:hover{
+            transform: scale(1.1);
+            box-shadow: #222 0px 50px  60px 1px ;
+        }
+        
+        .features h2 {
+            font-size: 22px;
+            font-weight: bold;
+        }
+        
+        /* Call to Action */
+        .cta {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            max-width: 800px;
+            margin: 30px auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cta h2 {
+            font-size: 22px;
+            font-weight: bold;
+        }
+        
+        /* Mobile Responsiveness */
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+        
+            /* Initially hide the navigation links */
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                right: 10px;
+                background: white;
+                padding: 10px;
+                border-radius: 5px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+        
+            /* When active, show the navigation links */
+            .nav-links.active {
+                display: flex;
+            }
+        
+            .nav-links a {
+                display: block;
+                padding: 10px;
+            }
+        }
+        
+        
+        #about-us {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgb(244, 240, 240);
+            border-radius: 8px;
+            text-align: center;
+        }
+        #aboutus_tag{
+            font-size: 40px;
+        }
+        
+        #fi2{
+            width: 100%;
+            
+            height: 100%;
+            border: blue solid 1px;
+            box-shadow: #222 4px 0px  20px 4px;
+            /* box-shadow: 5px 5px 40px 20px rgba(0, 0, 0, 0.2); */
+            border-radius: 50px;
+            }
+            
+            #fi2:hover{
+                transform: scale(1.1);
+                box-shadow: #222 0px 50px  60px 1px ;
+            }
+        
+        
+        /* Styling for the team members container */
+        .team-members-container {
+            display: flex;
+            flex-direction:column;
+            justify-content: center;
+            /* flex-wrap: wrap; */
+            gap: 20px; /* Adds space between the rows */
+        }
+        
+        /* Styling each row of team members */
+        .team-row {
+            display: flex;
+            justify-content: space-evenly; /* Evenly spaces the team members */
+            gap: 20px; /* Adds space between the team members */
+        }
+        
+        /* Styling each individual team member */
+        .team-member {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            width: 30%; /* Adjusts the size of each team member box */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        /* Styling for team member headings */
+        .team-member h2 {
+            color: #007BFF;
+            margin-top: 0;
+        }
+        
+        /* Styling for team member role */
+        .team-member p {
+            color: #666;
+            margin: 5px 0;
+        }
+        
+        /* Styling for links (GitHub and LinkedIn) */
+        .team-member a {
+            display: inline-block;
+            margin-right: 10px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        
+        /* Hover effect for links */
+        .team-member a:hover {
+            text-decoration: underline;
+        }
+        
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Hover effect for team meambers */
+        .team-member:hover {
+            transform: scale(1.1);
+        }
+        
+        #name {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 30px;
+        }
+        
+        .text_alpha{
+            font-size: 30px;
+            padding-top: 10px;
+            padding-bottom: 25px;
+            font-family:cursive;
+        }
+        
+        .body3 {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 10vh;
+            padding: 20px;
+        }
+        
+        
+        .achievements {
+            width: 100vw;
+            min-width: 1070px;
+            padding-left: 10px;
+            padding-right: 10px;
+            /* border: solid blue 3px; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+        
+        
+        .ach {
+            width: 100%;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            /* border: solid red 1px; */
+            transition: transform 0.3s ease-in-out; /
+        }
+        
+        
+        .immm {
+            width: 15vw;
+            min-width: 100px;
+            height: 200px;
+            /* border: solid black 1px; */
+            object-fit: cover;
+            transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out; 
+        }
+        
+        
+        .ach p {
+            position: absolute;
+            bottom: 01px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            width: 100%;
+            min-width: 100px;
+            text-align: center;
+        }
+        
+        .ach:hover .immm {
+            transform: scale(1.1);
+            filter: blur(2px);
+        }
+        
+        .ach:hover p {
+            opacity: 1; 
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        @media (max-width:1104px){
+            .achievements{
+                /* flex-wrap: wrap; */
+                min-width:800px;
+                padding: 1px; 
+                width:auto;
+                overflow: scroll;
+            }
+        
+            .ach{width: auto;
+            }
+        
+            .ach p {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+            h6{font-size: 60px;}
+        }
+        /* }
+        @media (max-width: 768px) {
+            .ach p {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+        
+            .achievements {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            } } */
+        
+        @media (max-width: 480px) {
+            .ach p {
+                font-size: 0.9rem;
+                padding: 6px;
+            }
+        
+            .achievements {
+                grid-template-columns: 1fr; 
+            }
+        }</style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="container">
+            <div class="logo_content">
+            <div class="logo_img">
+                <a href="index.html"><img id="logo_img1" src="{{ url_for('static', filename='logo2.png') }}" " alt=""></a>
+
+                
+            </div>
+            <div class="logo">
+                <button class="menu-toggle">&#9776;</button>
+                <p></p>
+                <span id="name"><i>DataHub</i></span>
+            </div>
+            </div>
+            <nav class="nav-links">
+                <a href="#aboutus_tag">About Us</a>
+                <a href="#feature_tag">Features</a>
+                <!-- <a href="./Pricing.html">Pricing</a>
+                <a href="./faq.html">FAQs</a> -->
+                <a href="{{ url_for('dashboard') }}" class="btn primary">Get Started</a>
+                <a href="{{ url_for('dashboard') }}" class="btn secondary">Sign up/Log in</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+     <div class="main-body">
+    <section class="hero">
+        <div class="hero-content">
+           
+            <div class="hero-text">
+                <div class="hero_text_animation">
+                <!-- <h1 >Take control of your finances today!</h1> -->
+                 <h6>University <br>Database <br> Management <br> System</h6>
+            </div>
+                <p>Streamline, Secure, Succeed — Your University Data, Organized. <br>Get started today.</p>
+                <div class="hero-buttons">
+                    <a id="feature_tag" href="{{ url_for('dashboard') }}" class="btn primary"><p><button id="b1">Get Started</button></p></a>
+                </div>
+            </div>
+            <div class="immmg"> <img src="{{ url_for('static', filename='homepage.png') }}" alt="Finance Illustration" class="hero-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container1">
+            <h2 >Features</h2>
+            <p>Here are some of the ways DataHub can help you manage your data better.</p>
+        </div>
+
+        <div class="feature1 1" id="features-common">
+            <div class="feature-img">
+                <img id="fi1" src="{{ url_for('static', filename='student_feature.jpg') }}" alt="feature">
+            </div>
+            <div class="feature-desc">
+                <p><b><u> STUDENTS DATA : <br> </u> </b> Manage comprehensive student profiles including personal details, academic history, attendance, and performance records. The system allows quick access and real-time updates, ensuring accuracy and ease of tracking student progress. Streamlined input helps administrators efficiently monitor student data from admission through graduation         </p></div>
+
+        </div>
+
+        <div class="feature1 2" id="features-common">
+            <div class="feature-desc"><p><b><u> FACULTY DATA:<br> </u> </b> 
+                Easily manage faculty profiles, including their subjects, schedules, qualifications, and availability. The system supports updates in real-time, ensuring accurate timetables and performance tracking. Faculty members can also access their data securely, making it easier to stay organized, update their teaching responsibilities, and communicate with departments and students.
+                
+                 </p></div>
+
+            <div class="feature-img">
+                <img id="fi1" src="{{ url_for('static', filename='faculty_feature.jpg') }}" alt="feature">
+            </div>
+
+        </div>
+        <div class="feature1 3" id="features-common">
+            <div class="feature-img">
+                <img id="fi2" src="{{ url_for('static', filename='department_feature.jpg') }}" alt="feature">
+            </div>
+            <div class="feature-desc"><p><b><u> DEPARTMENTS DATA: <br> </u> </b>                Organize and maintain department-specific data such as department heads, courses offered, faculty assignments, and resource allocations. Administrators can easily update department details, monitor staffing, and analyze academic contributions. The centralized system promotes smoother coordination between departments and ensures that all departmental data is current and accessible.
+            </p></div>
+
+        </div>
+        <div class="feature1 4" id="features-common">
+            <div class="feature-desc"><p><b><u> COURSES DATA <br> </u> </b>  :
+                Manage all course-related information, including course codes, titles, descriptions, credit hours, and prerequisites. Faculty assignments and student enrollments are integrated for easy tracking. The system supports real-time updates, ensuring that changes in curriculum or faculty assignments reflect instantly, helping maintain accuracy and improve academic planning.   </p></div>
+
+            <div class="feature-img">
+                <img id="fi2" src="{{ url_for('static', filename='course_feature.jpg') }}" alt="feature">
+            </div>
+
+        </div>
+        <div class="feature1 5" id="features-common">
+            <div class="feature-img">
+                <img id="fi2" src="{{ url_for('static', filename='college_feature.jpg') }}" alt="feature">
+            </div>
+            <div class="feature-desc"><p><b><u>COLLEGE DATA : <br></u> </b>    Manage all the data about the colleges that are affiliated to the university and track details like name , address , college id , contact number etc. </p></div>
+
+        </div>
+        <div class="feature1 6" id="features-common">
+            <div class="feature-desc"><p> <b><u> EASY DATA MANIPULATION :<br></u></b> Our web app offers an interactive, user-friendly, and responsive experience with a seamless interface to update your details .</p></div>
+
+            <div class="feature-img">
+                <img id="fi1" src="{{ url_for('static', filename='general_feature.jpg') }}" alt="feature">
+            </div>
+
+        </div> 
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta">
+        <h2>Ready to take control of your data?</h2>
+        <a href="{{ url_for('dashboard') }}" class="btn primary">Sign up/Log in</a>
+    </section>
+
+    <br><br>
+<div class="body3">
+
+    <div class="text_alpha">WHAT YOU WILL ACHIEVE THROUGH US!!</div>
+    <div class="achievements">
+   
+
+
+        <div class="ach">
+     <video class="immm" src="{{ url_for('static', filename='access.mp4') }}" autoplay loop muted></video>
+     <p>ACCESS YOUR DATA</p>
+    </div>
+    
+    
+    <div class="ach">
+     <video class="immm" src="{{ url_for('static', filename='manage.mp4') }}" autoplay loop muted></video>
+     <p>MANAGE YOUR DATA</p>
+    </div>
+    
+    
+    <div class="ach">
+     <video class="immm" src="{{ url_for('static', filename='personalised.mp4') }}" autoplay loop muted></video>
+     <p>PERSONALISED INTERFACE</p>
+    </div>
+    
+    <div class="ach">
+     <video class="immm" src="{{ url_for('static', filename='easy.mp4') }}" autoplay loop muted></video>
+     <p>EASY TO USE </p>
+    </div>
+    
+    <!-- <div class="ach">
+     <video class="immm" src="./boy-looking-at-dollar-cash-animation-download-in-lottie-json-gif-static-svg-file-formats--financial-ove.mp4" autoplay loop muted></video>
+     <p></p>
+    </div> -->
+    
+    </div>
+
+</div>
+</section>
+<br><br>
+
+    <section id="about-us">
+        <h1 id="aboutus_tag">About Us</h1>
+        <div class="team-members-container">
+            <!-- First row of team members -->
+            <div class="team-row">
+                <div class="team-member">
+                    <h2>Yash Kaushik</h2>
+                    <h3>Role: Full-Stack Developer</h3>
+                    <a href="https://github.com/Kaushik20yash" target="_blank">GitHub</a>
+                    <a href="https://www.linkedin.com/in/yashkaushik03/" target="_blank">LinkedIn</a>
+                </div>
+                <div class="team-member">
+                    <h2>Kartik Dalal</h2>
+                    <h3>Role: Full-Stack Developer</h3>
+                    <a href="https://github.com/kartikdalal19" target="_blank">GitHub</a>
+                    <a href="https://www.linkedin.com/in/kartik-dalal-642a42320" target="_blank">LinkedIn</a>
+                </div>
+               
+            </div>
+    
+            <!-- Second row of team members -->
+            <div class="team-row">
+               
+                <div class="team-member">
+                    <h2>Jayant Kumar</h2>
+                    <h3>Role: Backend Developer</h3>
+                    <a href="" target="_blank">GitHub</a>
+                    <a href="" target="_blank">LinkedIn</a>
+                </div>
+                <div class="team-member">
+                    <h2>Parth Khera</h2>
+                    <h3>Role: Backend Developer</h3>
+                    <a href="https://github.com/parthkhera-5" target="_blank">GitHub</a>
+                    <a href="https://www.linkedin.com/in/parth-khera-010952331/" target="_blank">LinkedIn</a>
+                </div>
+            </div>
+
+
+
+
+            <!-- Third row of team members -->
+            <div class="team-row">
+               
+                <div class="team-member">
+                    <h2>Naveen Gupta</h2>
+                    <h3>Role: Backend Developer</h3>
+                    <a href="" target="_blank">GitHub</a>
+                    <a href="" target="_blank">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </section><br><br><br><br>
+    <footer><b>© 2025 DataHub, Inc. All Rights Reserved</b></footer>
+</div>
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+    
+        menuToggle.addEventListener('click', function () {
+            navLinks.classList.toggle('active');
+        });
+    });
+    
+    </script>
+</html>

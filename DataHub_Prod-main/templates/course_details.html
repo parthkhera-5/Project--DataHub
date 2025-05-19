@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Course Details</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='depstyles.css') }}" />
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Navigation</h2>
+    <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a class="nav-link" href="{{ url_for('student_get') }}">Student Details</a>
+    <a class="nav-link" href="{{ url_for('faculty_details') }}">Faculty Details</a>
+<a class="nav-link" href="{{ url_for('department') }}">Department Details</a>
+    <a class="nav-link" href="{{ url_for('course_details') }}">Course Details</a>
+    <a class="nav-link" href="{{ url_for('college') }}">Colleges</a>
+  </div>
+
+  <div class="main-content">
+    <h1>Course Details Viewer</h1>
+    <div style="text-align: right; margin-bottom: 20px;">
+      <a href="{{ url_for('update_courses') }}"><button class="link-button">Update Courses</button></a>
+    </div>
+    <div class="container">
+      <h1>Select the Department to look at the courses offered:</h1>
+
+      {% for department in departments %}
+      <div class="department-card" onclick="toggleCourses(this)">
+        <h2>{{ department.Dname }}</h2>
+        <ul class="course-list">
+          {% for course in department.courses %}
+            <li>
+              <strong>Course No:</strong> {{ course.CourseNo }} <br>
+              <strong>Title:</strong> {{ course.Title }} <br>
+              <strong>Year:</strong> {{ course.Year }} <br>
+              <strong>Department ID:</strong> {{ course.Did }}
+            </li>
+          {% endfor %}
+        </ul>
+        
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script>
+    function toggleCourses(card) {
+      const list = card.querySelector('.course-list');
+      list.style.display = (list.style.display === "block") ? "none" : "block";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add New Student</title>
+  <style>
+    /* Base styling */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      display: flex;
+      min-height: 100vh;
+      background-image: url('/static/studentbg.jpg'); /* Ensure bg.png exists in the directory */
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .main_body {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Sidebar styling */
+    .sidebar {
+      width: 240px;
+      background-color: rgba(0, 0, 0, 0.75);
+      color: white;
+      padding: 30px 20px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+      position: fixed;
+      height: 100%;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 22px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #fff;
+      padding: 12px 15px;
+      margin: 8px 0;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background 0.3s ease;
+    }
+
+    .sidebar a:hover {
+      background-color: #28a745;
+    }
+
+    /* Main content container */
+    .main-content {
+      margin-left: 260px;
+      padding: 40px 20px;
+      width: 800px;
+      flex: 1;
+    }
+
+    /* Form container styling */
+    .container {
+      max-width: 600px;
+      background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
+      padding: 30px;
+      border-radius: 50px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      margin: auto;
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #756d6d;
+      font-size: 35px;
+      margin-bottom: 30px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: #5e5555;
+    }
+
+    input {
+      width: 90%;
+      padding: 12px;
+      height: 20px;
+      background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 13px;
+      font-size: 20px;
+    }
+    input:hover{
+      background-color: #3b3d3d;
+      transform: scale(1.06);
+    }
+
+    .btn {
+      width: 100%;
+      height: 60px;
+      padding: 14px;
+      border: none;
+      border-radius: 20px;
+      font-size: 23px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary {
+      background-image: linear-gradient(to top, #09203f 0%, #1685da 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.1);
+      background-color: #218838;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-secondary {
+      background-image: linear-gradient(-20deg, #00cdac 0%, #3b3d3d 100%);
+      color: white;
+      margin-top: 10px;
+    }
+
+    .btn-secondary:hover {
+      background-color: #dbdbdb;
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .buttonsss {
+      margin: 40px 0 10px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        box-shadow: none;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 20px 10px;
+        width: 100%;
+      }
+
+      .btn-accent {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar navigation -->
+  <div class="sidebar">
+    <h2>Navigation</h2>
+    <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a class="nav-link" href="{{ url_for('student_get') }}">Student Details</a>
+<a class="nav-link" href="{{ url_for('faculty_details') }}">Faculty Details</a>
+<a class="nav-link" href="{{ url_for('department') }}">Department Details</a>
+    <a class="nav-link" href="{{ url_for('course_details') }}">Course Details</a>
+    <a class="nav-link" href="{{ url_for('college') }}">Colleges</a>
+  </div>
+
+  <!-- Main content container -->
+  <div class="main-content">
+
+    <!-- Add Student Form -->
+    <div class="container">
+      <h1>Add New Student</h1>
+      <form id="addStudentForm">
+        <label for="id">Student ID</label>
+        <input type="text" id="id" required />
+
+        <label for="name">Name</label>
+        <input type="text" id="name" required />
+
+        <label for="year">Year</label>
+        <input type="text" id="year" required />
+
+        <label for="contact">Contact Number</label>
+        <input type="text" id="contact" required />
+
+        <label for="address">Address</label>
+        <input type="text" id="address" required />
+
+        <label for="course">Course No.</label>
+        <input type="text" id="course" required />
+
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <div class="message" id="message"></div>
+      </form>
+
+      <button class="btn btn-secondary" onclick="history.back()">Back</button>
+    </div>
+
+  </div>
+
+  <script>
+    const API_BASE = "https://datahubprod-production.up.railway.app/students"; // Update if deployed
+
+    // Handle Add Student Form Submission
+    // <script>
+  document.getElementById("addStudentForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const studentData = {
+      Sid: document.getElementById("id").value,
+      Name: document.getElementById("name").value,
+      Year: document.getElementById("year").value,
+      ContactNo: document.getElementById("contact").value,
+      Address: document.getElementById("address").value,
+      CourseNo: document.getElementById("course").value,
+    };
+
+    try {
+      const res = await fetch("https://datahubprod-production.up.railway.app/students", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(studentData),
+      });
+
+      if (res.ok) {
+        document.getElementById("message").innerHTML = "Student added successfully!";
+        document.getElementById("addStudentForm").reset();
+      } else {
+        const error = await res.json();
+        document.getElementById("message").innerHTML = `Error: ${error.message}`;
+      }
+    } catch (err) {
+      document.getElementById("message").innerHTML = `Error: ${err.message}`;
+    }
+  });
+</script>
+</body>
+</html>

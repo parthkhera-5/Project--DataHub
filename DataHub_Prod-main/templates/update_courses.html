@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Update Courses</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='depstyles.css') }}" />
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Navigation</h2>
+        <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a class="nav-link" href="{{ url_for('student_get') }}">Student Details</a>
+        <a class="nav-link" href="{{ url_for('faculty_details') }}">Faculty Details</a>
+<a class="nav-link" href="{{ url_for('department') }}">Department Details</a>
+        <a class="nav-link" href="{{ url_for('course_details') }}">Course Details</a>
+        <a class="nav-link" href="{{ url_for('college') }}">Colleges</a>
+      </div>
+  <div class="main-content">
+    <h1>Manage Courses</h1>
+
+    <h2>Add Course</h2>
+    <form action="{{ url_for('add_course') }}" method="POST">
+      <input type="text" name="CourseNo" placeholder="Course No" required>
+      <input type="text" name="Title" placeholder="Title">
+      <input type="text" name="Year" placeholder="Year">
+      <input type="text" name="Did" placeholder="Department ID" required>
+      <button type="submit">Add Course</button>
+    </form>
+
+    <h2>Edit Course</h2>
+    <form action="{{ url_for('edit_course') }}" method="POST">
+      <input type="text" name="CourseNo" placeholder="Course No to Edit" required>
+      <input type="text" name="Title" placeholder="New Title">
+      <input type="text" name="Year" placeholder="Year">
+      <input type="text" name="Did" placeholder="New Department ID">
+      <button type="submit">Edit Course</button>
+    </form>
+
+    <h2>Delete Course</h2>
+    <form action="{{ url_for('delete_course') }}" method="POST">
+      <input type="text" name="CourseNo" placeholder="Course No to Delete" required>
+      <button type="submit">Delete Course</button>
+    </form>
+
+    <br>
+    <a href="{{ url_for('course_details') }}"><button class="back">Back to Course Viewer</button></a>
+  </div>
+</body>
+</html>

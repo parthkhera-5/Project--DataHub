@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Details Viewer</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body{
+      background-image: url('/static/studentbg.jpg'); /* Replace with your image path */
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: Arial, sans-serif; 
+      font-family: Arial, sans-serif;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      color: #fff;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #70a1ff;
+    }
+
+    .nav-link {
+      margin-bottom: 18px;
+      padding: 12px 16px;
+      background-color: #57606f;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .nav-link:hover {
+      background-color: #747d8c;
+    }
+
+    .main-content {
+      margin-left: 270px;
+      padding: 40px 20px;
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background-image: linear-gradient(to top, #dad4ec 0%, #f3e7e9 100%);
+      padding: 30px;
+      border-radius: 50px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: block;
+      color: #444;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      background-color: #edebf3;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      width: 80%;
+      padding: 12px;
+      background-image: linear-gradient(to top, #4481eb 0%, #04befe 100%);
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-left: 10%;
+      margin-bottom: 10px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .link-button {
+      background-image: linear-gradient(-225deg, #e2ba5d 0%, #ff6958 48%, #db4b74 100%);
+    }
+
+    .secondary-button {
+      background-image: linear-gradient(-225deg, #22E1FF 0%, #1D8FE1 48%, #625EB1 100%);
+    }
+
+    .error {
+      color: red;
+      margin-top: 15px;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .all-students, .details {
+      margin-top: 30px;
+      display: none;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #dee1e4;
+      border-radius: 20px;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #343a40;
+      color: #fff;
+    }
+
+    td button {
+      padding: 6px 10px;
+      font-size: 14px;
+      margin-right: 6px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .edit-btn {
+      background-color: #ffc107;
+      color: #fff;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: #fff;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 10px;
+      width: 400px;
+      max-width: 90%;
+    }
+
+    .modal-content input {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .modal-buttons button {
+      flex: 1;
+      margin: 5px;
+      padding: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-link {
+        margin: 8px;
+        flex: 1 1 auto;
+        text-align: center;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Navigation</h2>
+    <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a class="nav-link" href="{{ url_for('student_get') }}">Student Details</a>
+<a class="nav-link" href="{{ url_for('faculty_details') }}">Faculty Details</a>
+<a class="nav-link" href="{{ url_for('department') }}">Department Details</a>
+    <a class="nav-link" href="{{ url_for('course_details') }}">Course Details</a>
+    <a class="nav-link" href="{{ url_for('college') }}">Colleges</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h1>Student Details Viewer</h1>
+
+    <div class="container">
+      <label for="studentId">Enter Student ID:</label>
+      <input type="text" id="studentId" placeholder="e.g. S1001" />
+      <button onclick="searchStudent()">Search</button>
+
+      <button class="link-button" onclick="window.location.href='/add-student'">Add Student in Database</button>
+      <button class="secondary-button" onclick="showAllStudents()">View All Students</button>
+
+      <div id="error" class="error"></div>
+
+      <div class="details" id="studentDetails"></div>
+      <div class="all-students" id="allStudents"></div>
+    </div>
+  </div>
+
+  <!-- Modal for Edit -->
+  <div class="modal" id="editModal">
+    <div class="modal-content">
+      <h3>Edit Student</h3>
+      <input type="text" id="editName" placeholder="Name" />
+      <input type="text" id="editYear" placeholder="Year" />
+      <input type="text" id="editContact" placeholder="Contact" />
+      <input type="text" id="editAddress" placeholder="Address" />
+      <input type="text" id="editCourse" placeholder="Course" />
+      <div class="modal-buttons">
+        <button class="link-button" onclick="saveStudent()">Save</button>
+        <button class="delete-btn" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    
+    const API_BASE = "https://datahubprod-production.up.railway.app/students"; // Update if hosted
+    let editingStudentId = null;
+
+    async function searchStudent() {
+      const id = document.getElementById("studentId").value.trim().toUpperCase();
+      const errorDiv = document.getElementById("error");
+      const detailsDiv = document.getElementById("studentDetails");
+      const allStudentsDiv = document.getElementById("allStudents");
+
+      errorDiv.textContent = "";
+      detailsDiv.style.display = "none";
+      allStudentsDiv.style.display = "none";
+      detailsDiv.innerHTML = "";
+
+      try {
+        const res = await fetch(`${API_BASE}/${id}`);
+        if (!res.ok) throw new Error("Student not found.");
+        const student = await res.json();
+
+        detailsDiv.innerHTML = `
+          <table><thead><tr>
+            <th>ID</th><th>Name</th><th>Year</th><th>Contact</th><th>Address</th><th>Course</th><th>Actions</th>
+          </tr></thead><tbody><tr>
+            <td>${student.Sid}</td>
+            <td>${student.Name}</td>
+            <td>${student.Year}</td>
+            <td>${student.ContactNo}</td>
+            <td>${student.Address}</td>
+            <td>${student.CourseNo}</td>
+            <td>
+              <button class="edit-btn" onclick="editStudent('${student.Sid}')">Edit</button>
+              <button class="delete-btn" onclick="deleteStudent('${student.Sid}')">Delete</button>
+            </td>
+          </tr></tbody></table>
+        `;
+        detailsDiv.style.display = "block";
+      } catch (err) {
+        errorDiv.textContent = err.message;
+      }
+    }
+
+    async function showAllStudents() {
+      const allStudentsDiv = document.getElementById("allStudents");
+      const detailsDiv = document.getElementById("studentDetails");
+      allStudentsDiv.innerHTML = "";
+
+      try {
+        const res = await fetch(`${API_BASE}`);
+        const students = await res.json();
+
+        const rows = students.map(student => `
+          <tr>
+            <td>${student.Sid}</td>
+            <td>${student.Name}</td>
+            <td>${student.Year}</td>
+            <td>${student.ContactNo}</td>
+            <td>${student.Address}</td>
+            <td>${student.CourseNo}</td>
+            <td>
+              <button class="edit-btn" onclick="editStudent('${student.Sid}')">Edit</button>
+              <button class="delete-btn" onclick="deleteStudent('${student.Sid}')">Delete</button>
+            </td>
+          </tr>
+        `).join("");
+
+        allStudentsDiv.innerHTML = `
+          <table><thead><tr>
+            <th>ID</th><th>Name</th><th>Year</th><th>Contact</th><th>Address</th><th>Course</th><th>Actions</th>
+          </tr></thead><tbody>${rows}</tbody></table>
+        `;
+        allStudentsDiv.style.display = "block";
+        detailsDiv.style.display = "none";
+      } catch (err) {
+        document.getElementById("error").textContent = "Error fetching students.";
+      }
+    }
+
+    async function editStudent(id) {
+      const res = await fetch(`${API_BASE}/${id}`);
+      const student = await res.json();
+      editingStudentId = id;
+
+      document.getElementById("editName").value = student.Name;
+      document.getElementById("editYear").value = student.Year;
+      document.getElementById("editContact").value = student.ContactNo;
+      document.getElementById("editAddress").value = student.Address;
+      document.getElementById("editCourse").value = student.CourseNo;
+
+      document.getElementById("editModal").style.display = "flex";
+    }
+
+    async function saveStudent() {
+      const payload = {
+        Name: document.getElementById("editName").value,
+        Year: parseInt(document.getElementById("editYear").value),
+        ContactNo: document.getElementById("editContact").value,
+        Address: document.getElementById("editAddress").value,
+        CourseNo: document.getElementById("editCourse").value
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}/${editingStudentId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error("Update failed.");
+        closeModal();
+        showAllStudents();
+        searchStudent();
+      } catch (err) {
+        alert("Error: " + err.message);
+      }
+    }
+
+    async function deleteStudent(id) {
+      if (!confirm("Are you sure?")) return;
+      try {
+        const res = await fetch(`${API_BASE}/${id}`, { method: "DELETE" });
+        if (!res.ok) throw new Error("Delete failed.");
+        showAllStudents();
+        document.getElementById("studentDetails").style.display = "none";
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    function closeModal() {
+      document.getElementById("editModal").style.display = "none";
+      editingStudentId = null;
+    }
+  </script>
+</body>
+</html>

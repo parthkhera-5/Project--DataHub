@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Faculty Manager</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-image: url('/static/facultybg.jpg');
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #2f3542;
+      color: #fff;
+      padding: 30px 20px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #70a1ff;
+    }
+
+    .nav-link {
+      display: block;
+      margin-bottom: 18px;
+      padding: 12px;
+      background-color: #57606f;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+
+    .main-content {
+      margin-left: 270px;
+      padding: 40px 20px;
+      width: 100%;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 16px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
+    .btn-search { background-color: #007bff; }
+    .btn-add { background-color: #28a745; }
+    .btn-view { background-color: #ffc107; color: #000; }
+
+    .btn-update { background-color: #17a2b8; }
+    .btn-delete { background-color: #dc3545; }
+
+    .btn-search:hover { background-color: #0056b3; }
+    .btn-add:hover { background-color: #1e7e34; }
+    .btn-view:hover { background-color: #e0a800; }
+
+    .table-container {
+      overflow-x: auto;
+      margin-top: 20px;
+    }
+
+    .heading1 {
+        text-align: center;
+      color: #ffffff;
+      margin-bottom: 20px;
+      }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #343a40;
+      color: white;
+    }
+
+    .error {
+      color: red;
+      font-weight: bold;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .add-form, .update-modal {
+      display: none;
+      margin-top: 30px;
+    }
+
+    .update-modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .update-form {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 500px;
+      width: 90%;
+    }
+
+    .update-form h3 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 20px;
+      }
+
+      
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Navigation</h2>
+    <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a class="nav-link" href="{{ url_for('student_get') }}">Student Details</a>
+<a class="nav-link" href="{{ url_for('faculty_details') }}">Faculty Details</a>
+<a class="nav-link" href="{{ url_for('department') }}">Department Details</a>
+    <a class="nav-link" href="{{ url_for('course_details') }}">Course Details</a>
+    <a class="nav-link" href="{{ url_for('college') }}">Colleges</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h1 class="heading1">Faculty Management</h1>
+
+    <div class="container">
+      <label for="facultyId">Search by Faculty ID:</label>
+      <input type="text" id="facultyId" placeholder="e.g. F1001" />
+      <button class="btn-search" onclick="searchFaculty()">Search</button>
+      <button class="btn-add" onclick="toggleAddForm()">Add Faculty</button>
+      <button class="btn-view" onclick="viewAllFaculties()">View All Faculties</button>
+
+      <div id="error" class="error"></div>
+
+      <!-- Add Faculty Form -->
+      <div class="add-form" id="addForm">
+        <h3>Add Faculty</h3>
+        <form id="addFacultyForm">
+          <input type="text" id="newFid" placeholder="Faculty ID" required />
+          <input type="text" id="deptdid" placeholder="DepartmentID" required />
+          <input type="text" id="newName" placeholder="Name" required />
+          <input type="text" id="newDesignation" placeholder="Designation" required />
+          <input type="text" id="newQualification" placeholder="Qualification" required />
+          <input type="text" id="newAddress" placeholder="Address" required />
+          <input type="text" id="newContact" placeholder="Contact No" required />
+          <input type="text" id="newCid" placeholder="College ID" required />
+          <button type="submit" class="btn-add">Submit</button>
+        </form>
+      </div>
+
+      <!-- Table -->
+      <div class="table-container" id="facultyTable"></div>
+    </div>
+  </div>
+
+  <!-- Update Modal -->
+  <div class="update-modal" id="updateModal">
+    <div class="update-form">
+      <h3>Update Faculty</h3>
+      <form id="updateFacultyForm">
+        <input type="text" id="editFid" placeholder="Faculty ID" readonly />
+        <input type="text" id="editdid" placeholder="DepartmentID" required />
+        <input type="text" id="editName" placeholder="Name" required />
+        <input type="text" id="editDesignation" placeholder="Designation" required />
+        <input type="text" id="editQualification" placeholder="Qualification" required />
+        <input type="text" id="editAddress" placeholder="Address" required />
+        <input type="text" id="editContact" placeholder="Contact No" required />
+        <input type="text" id="editCid" placeholder="College ID" required />
+        <button type="submit" class="btn-update">Update</button>
+        <button type="button" class="btn-delete" onclick="closeModal()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+<script>
+    const API_URL = "https://datahubprod-production.up.railway.app/faculties";
+
+function renderTable(data) {
+  const container = document.getElementById("facultyTable");
+  if (!data || data.length === 0) {
+    container.innerHTML = "<p>No faculty data available</p>";
+    return;
+  }
+  
+  container.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Faculty ID</th>
+          <th>Department ID</th>
+          <th>Name</th>
+          <th>Designation</th>
+          <th>Qualification</th>
+          <th>Address</th>
+          <th>Contact</th>
+          <th>College ID</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${data.map(fac => `
+          <tr>
+            <td>${fac.id || fac.Fid}</td>
+            <td>${fac.Did}</td>
+            <td>${fac.name || fac.Name}</td>
+            <td>${fac.designation || fac.Designation}</td>
+            <td>${fac.qualification || fac.Qualification}</td>
+            <td>${fac.address || fac.Address}</td>
+            <td>${fac.contact || fac.ContactNo}</td>
+            <td>${fac.Cid || fac.Cid}</td>
+            <td>
+              <button class="btn-update" onclick="openUpdate('${fac.id || fac.Fid}')">Update</button>
+              <button class="btn-delete" onclick="deleteFaculty('${fac.id || fac.Fid}')">Delete</button>
+            </td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+  `;
+}
+
+async function searchFaculty() {
+  const id = document.getElementById("facultyId").value.trim().toUpperCase();
+  const errorElement = document.getElementById("error");
+  errorElement.textContent = "";
+  document.getElementById("addForm").style.display = "none";
+
+  if (!id) {
+    errorElement.textContent = "Please enter a Faculty ID";
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/${id}`);
+    if (!response.ok) {
+      throw new Error(response.status === 404 ? "Faculty not found" : "Error fetching faculty");
+    }
+    const data = await response.json();
+
+    renderTable([{
+      id,
+      Did: data.Did,
+      Name: data.Name,
+      Designation: data.Designation,
+      Qualification: data.Qualification,
+      Address: data.Address,
+      ContactNo: data.ContactNo,
+      Cid: data.Cid
+    }]);
+  } catch (err) {
+    document.getElementById("facultyTable").innerHTML = "";
+    errorElement.textContent = err.message;
+  }
+}
+
+async function viewAllFaculties() {
+  try {
+    const response = await fetch(API_URL);
+    if (!response.ok) throw new Error("Failed to fetch faculties");
+    
+    const data = await response.json();
+    
+    if (!Array.isArray(data)) {
+      throw new Error("Invalid data format received");
+    }
+
+    renderTable(data);
+    document.getElementById("addForm").style.display = "none";
+    document.getElementById("error").textContent = "";
+  } catch (err) {
+    console.error("Error loading faculties:", err);
+    document.getElementById("error").textContent = "Error loading faculties. Please try again.";
+  }
+}
+
+function toggleAddForm() {
+  const form = document.getElementById("addForm");
+  form.style.display = form.style.display === "block" ? "none" : "block";
+  document.getElementById("facultyTable").innerHTML = "";
+  document.getElementById("error").textContent = "";
+}
+
+document.getElementById("addFacultyForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const facultyData = {
+    Fid: document.getElementById("newFid").value.trim().toUpperCase(),
+    Did: document.getElementById("deptdid").value.trim().toUpperCase(),
+    Name: document.getElementById("newName").value.trim(),
+    Designation: document.getElementById("newDesignation").value.trim(),
+    Qualification: document.getElementById("newQualification").value.trim(),
+    Address: document.getElementById("newAddress").value.trim(),
+    ContactNo: document.getElementById("newContact").value.trim(),
+    Cid: document.getElementById("newCid").value.trim(),
+  };
+
+  // Basic validation
+  if (!facultyData.Fid || !facultyData.Did || !facultyData.Name) {
+    alert("Faculty ID, Department ID, and Name are required fields");
+    return;
+  }
+
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(facultyData)
+    });
+
+    const result = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(result.message || "Failed to add faculty");
+    }
+
+    alert("Faculty added successfully!");
+    this.reset();
+    toggleAddForm();
+    await viewAllFaculties();
+  } catch (err) {
+    alert(err.message);
+    console.error("Error adding faculty:", err);
+  }
+});
+
+async function openUpdate(id) {
+  try {
+    const response = await fetch(`${API_URL}/${id}`);
+    if (!response.ok) throw new Error("Failed to fetch faculty data");
+    
+    const data = await response.json();
+    
+    document.getElementById("editFid").value = id;
+    document.getElementById("editdid").value = data.Did || "";
+    document.getElementById("editName").value = data.Name || "";
+    document.getElementById("editDesignation").value = data.Designation || "";
+    document.getElementById("editQualification").value = data.Qualification || "";
+    document.getElementById("editAddress").value = data.Address || "";
+    document.getElementById("editContact").value = data.ContactNo || "";
+    document.getElementById("editCid").value = data.Cid || "";
+    
+    document.getElementById("updateModal").style.display = "flex";
+  } catch (err) {
+    alert("Error fetching faculty data: " + err.message);
+    console.error(err);
+  }
+}
+
+function closeModal() {
+  document.getElementById("updateModal").style.display = "none";
+}
+
+document.getElementById("updateFacultyForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+  const id = document.getElementById("editFid").value.trim();
+  
+  const facultyData = {
+    Did: document.getElementById("editdid").value.trim(),
+    Name: document.getElementById("editName").value.trim(),
+    Designation: document.getElementById("editDesignation").value.trim(),
+    Qualification: document.getElementById("editQualification").value.trim(),
+    Address: document.getElementById("editAddress").value.trim(),
+    ContactNo: document.getElementById("editContact").value.trim(),
+    Cid: document.getElementById("editCid").value.trim(),
+  };
+
+  // Basic validation
+  if (!facultyData.Did || !facultyData.Name) {
+    alert("Department ID and Name are required fields");
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "PUT",
+      headers: { 
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(facultyData)
+    });
+
+    const result = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(result.message || "Update failed");
+    }
+    
+    closeModal();
+    await viewAllFaculties();
+  } catch (err) {
+    alert("Error updating faculty: " + err.message);
+    console.error(err);
+  }
+});
+
+async function deleteFaculty(id) {
+  if (!confirm(`Are you sure you want to delete faculty ${id}?`)) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/${id}`, { 
+      method: "DELETE" 
+    });
+    
+    if (!response.ok) {
+      const result = await response.json();
+      throw new Error(result.message || "Delete failed");
+    }
+    
+    await viewAllFaculties();
+  } catch (err) {
+    alert("Error deleting faculty: " + err.message);
+    console.error(err);
+  }
+}
+
+// Initialize the page
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("updateModal").style.display = "none";
+  // Optionally load all faculties on page load
+  // viewAllFaculties();
+});
+</script>
+
+</body>
+</html>

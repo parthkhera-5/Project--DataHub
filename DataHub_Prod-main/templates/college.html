@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>College Details Viewer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      display: flex;
+      min-height: 100vh;
+      background-image: url('/static/collegebg.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .sidebar {
+    width: 250px;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+  }
+
+  .sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #70a1ff;
+  }
+  .nav-link {
+    margin-bottom: 18px;
+    padding: 12px 16px;
+    background-color: #57606f;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+
+  .nav-link:hover {
+    background-color: #747d8c;
+  }
+
+    .main-content {
+      margin-left: 260px;
+      padding: 40px 20px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      margin-bottom: 40px;
+    }
+
+    h2, h3 {
+      text-align: center;
+      color: #1093aa;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 8px;
+      color: #444;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .btn {
+      width: 100%;
+      height: auto;
+      padding: 7px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 5px;
+      transition: background-color 0.3s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-search { background-color: #1e90ff; color: white; }
+    .btn-search:hover { background-color: #1c86ee; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+    .btn-update { background-color: #2ed573; color: white; }
+    .btn-update:hover { background-color: #28c76f; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+    .btn-delete { background-color: #ff6b81; color: white; }
+    .btn-delete:hover { background-color: #e55060; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+    .btn-back { background-color: #3742fa; color: white; }
+    .btn-back:hover { background-color: #2f36c9; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #ff6b81;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 1000;
+    }
+
+    .popup span {
+      margin-left: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    #message {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        box-shadow: none;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 20px 10px;
+        width: 100%;
+      }
+
+      .container {
+        width: 100%;
+      }
+      .styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 15px;
+  border: 1px solid #ddd;
+  background-color: #fefefe;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.styled-table input {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Navigation</h2>
+    <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a class="nav-link" href="{{ url_for('student_get') }}">Student Details</a>
+<a class="nav-link" href="{{ url_for('faculty_details') }}">Faculty Details</a>
+<a class="nav-link" href="{{ url_for('department') }}">Department Details</a>
+    <a class="nav-link" href="{{ url_for('course_details') }}">Course Details</a>
+    <a class="nav-link" href="{{ url_for('college') }}">Colleges</a>
+  </div>
+
+  <div class="main-content">
+    <div class="container">
+      <h2>College Details Viewer</h2>
+      <div id="view-section">
+        <label>Search by ID, Name, or Contact:</label>
+        <input type="text" id="collegeSearch" placeholder="e.g. C1001, Alpha College, 1234567890">
+        <button class="btn btn-search" onclick="searchCollege()">Search</button>
+        <button class="btn btn-update" onclick="showUpdateForm()">Update Details</button>
+        <button class="btn btn-back" onclick="showAllColleges()">Show All Colleges</button>
+      </div>
+
+      <div id="update-section" style="display:none">
+        <h3>Add / Update College</h3>
+        <input type="text" id="newId" placeholder="College ID">
+        <input type="text" id="newName" placeholder="College Name">
+        <input type="text" id="newAddress" placeholder="Address">
+        <input type="text" id="newContact" placeholder="Contact Number">
+        <button class="btn btn-update" onclick="submitDetails()">Submit</button>
+        <button class="btn btn-delete" onclick="deleteCollege()">Delete</button>
+        <button class="btn btn-back" onclick="goBack()">Back</button>
+      </div>
+      <div id="table-section" style="display:none">
+        <h3>All Colleges</h3>
+        <table class="styled-table" style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr>
+              <th>ID</th><th>Name</th><th>Address</th><th>Contact</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="college-table-body"></tbody>
+        </table>
+        <button class="btn btn-back" onclick="goBack()">Back</button>
+      </div>
+      
+
+      <div id="popup" class="popup"></div>
+      <p id="message"></p>
+    </div>
+  </div>
+
+  <script>
+    function showPopup(message) {
+      const popup = document.getElementById("popup");
+      popup.innerHTML = message + '<span onclick="hidePopup()">&times;</span>';
+      popup.style.display = 'block';
+      setTimeout(() => popup.style.display = 'none', 4000);
+    }
+  
+    function hidePopup() {
+      document.getElementById("popup").style.display = 'none';
+    }
+  
+    function searchCollege() {
+    const input = document.getElementById("collegeSearch").value.trim();
+    if (!input) {
+        showPopup("Please enter a search keyword.");
+        return;
+    }
+
+    fetch('/search', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ keyword: input })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Data received:", data);
+        if (data && data.college_id) {
+          document.getElementById("message").innerText = `College Found: ${data.name}, ${data.address}, ${data.contact}`;//chnged
+            // Pre-fill the update form
+            document.getElementById("newId").value = data.college_id;
+            document.getElementById("newName").value = data.name;
+            document.getElementById("newAddress").value = data.address;
+            document.getElementById("newContact").value = data.contact;
+        } else {
+            document.getElementById("message").innerText = "";
+            showPopup("College not found. Click 'Update Details' to add.");
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showPopup("An error occurred while searching.");
+    });
+}
+  
+async function showAllColleges() {
+  const res = await fetch("/all");
+  const data = await res.json();
+
+  document.getElementById("view-section").style.display = "none";
+  document.getElementById("update-section").style.display = "none";
+  document.getElementById("table-section").style.display = "block";
+
+  const tbody = document.getElementById("college-table-body");
+  tbody.innerHTML = data.map(row => `
+    <tr>
+      <td><input type="text" value="${row.college_id}" disabled></td>
+      <td><input type="text" value="${row.name}"></td>
+      <td><input type="text" value="${row.address}"></td>
+      <td><input type="text" value="${row.contact}"></td>
+      <td>
+        <button class="btn btn-update" onclick="saveRow(this)">Save</button>
+        <button class="btn btn-delete" onclick="deleteRow('${row.college_id}', this)">Delete</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function saveRow(btn) {
+  const row = btn.closest('tr');
+  const inputs = row.querySelectorAll('input');
+  const data = {
+    id: inputs[0].value,
+    name: inputs[1].value,
+    address: inputs[2].value,
+    contact: inputs[3].value
+  };
+
+
+  fetch('/add_or_update', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(result => {
+    if (result.message === 'Success') {
+      showPopup(`Updated college ${data.id}`);
+    } else {
+      showPopup('Failed to update.');
+    }
+  });
+}
+
+function deleteRow(collegeId, btn) {
+  if (!confirm("Are you sure you want to delete this college?")) return;
+
+  fetch('/delete', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: collegeId })
+  })
+  .then(res => res.json())
+  .then(result => {
+    if (result.message === 'Deleted') {
+      showPopup(`Deleted college ${collegeId}`);
+      btn.closest('tr').remove();
+    } else {
+      showPopup('Failed to delete.');
+    }
+  });
+}
+
+
+  
+    function showUpdateForm() {
+      document.getElementById("view-section").style.display = "none";
+      document.getElementById("update-section").style.display = "block";
+    }
+  
+    function submitDetails() {
+    const id = document.getElementById("newId").value.trim();
+    const name = document.getElementById("newName").value.trim();
+    const address = document.getElementById("newAddress").value.trim();
+    const contact = document.getElementById("newContact").value.trim();
+
+    // Debugging: Log the data to ensure it's being captured correctly
+    console.log("Submitting the following data:");
+    console.log("ID:", id, "Name:", name, "Address:", address, "Contact:", contact);
+
+    // Check if all fields are filled
+    if (!id || !name || !address || !contact) {
+        showPopup("Please fill all fields before submitting.");
+        return;
+    }
+
+    // Send data to Flask
+    fetch('/add_or_update', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            id: id,
+            name: name,
+            address: address,
+            contact: contact
+        })
+    })
+    .then(response => response.json())  // Wait for the response
+    .then(data => {
+        // Log the response to check what is returned by Flask
+        console.log("Response from server:", data);
+
+        if (data.message === "Success") {
+            // Show a success message if data is successfully added/updated
+            document.getElementById("message").innerText = `College ${id} - ${name} added/updated successfully!`;
+        } else {
+            // Show a popup if there is an error with the request
+            showPopup("An error occurred while submitting details.");
+        }
+    })
+    .catch(error => {
+        // Log any fetch errors
+        console.error('Fetch error:', error);
+        showPopup("An error occurred while submitting details.");
+    });
+}
+    async function deleteCollege() {
+      const id = document.getElementById("newId").value.trim();
+  
+      const res = await fetch("/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id })
+      });
+  
+      const data = await res.json();
+      document.getElementById("message").innerText = `College ${id} deleted.`;
+    }
+  
+    function goBack() {
+  document.getElementById("update-section").style.display = "none";
+  document.getElementById("table-section").style.display = "none"; //  ADD THIS LINE
+  document.getElementById("view-section").style.display = "block";
+}
+
+  
+    function navigateTo(section) {
+      alert("Navigating to: " + section);
+      // window.location.href = `${section}.html`;
+    }
+  </script>  
+</body>
+</html>
